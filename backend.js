@@ -25,7 +25,7 @@
         password,
         options: {
           data: { full_name: name },
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: new URL('.', window.location.href).toString(),
         },
       }));
     },

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-ui="classic">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filio Investment Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- ========== AUTH GATE ========== -->
+    <div id="authGate" class="auth-gate">
+        <div class="auth-split">
+            <div class="auth-hero">
+                <div class="hero-logo">
+                    <svg viewBox="0 0 48 48" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="44" height="44" rx="14" stroke="currentColor" stroke-width="2.5"/>
+                        <path d="M14 30L22 20L28 26L34 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="34" cy="16" r="3" fill="currentColor"/>
+                    </svg>
+                    <span class="hero-logo-text">Filio</span>
+                </div>
+                <h1 class="serif">Filio Investment Hub</h1>
+                <p class="hero-sub">Grow your money with confidence. Structured plans, transparent earnings, and a professional dashboard.</p>
+                <div class="hero-features">
+                    <div><i class="fas fa-shield-halved"></i> Secure deposits</div>
+                    <div><i class="fas fa-chart-line"></i> Real-time earnings</div>
+                    <div><i class="fas fa-user-check"></i> Verified receipts</div>
+                </div>
+            </div>
+
+            <div class="auth-card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="signup">Create account</button>
+                    <button class="auth-tab" data-tab="login">Sign in</button>
+                </div>
+
+                <form id="signupForm" class="auth-form" novalidate>
+                    <label>Full name</label>
+                    <input type="text" id="suName" placeholder="John Doe" autocomplete="name">
+                    <div class="error-text" id="suNameErr"></div>
+
+                    <label>Email address</label>
+                    <input type="email" id="suEmail" placeholder="you@example.com" autocomplete="email">
+                    <div class="error-text" id="suEmailErr"></div>
+
+                    <label>Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="suPass" placeholder="Min 8 chars, 1 uppercase, 1 number" autocomplete="new-password">
+                        <i class="fas fa-eye toggle-eye" data-target="suPass"></i>
+                    </div>
+                    <div class="error-text" id="suPassErr"></div>
+
+                    <label>Confirm password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="suConfirm" placeholder="Re-enter password" autocomplete="new-password">
+                        <i class="fas fa-eye toggle-eye" data-target="suConfirm"></i>
+                    </div>
+                    <div class="error-text" id="suConfirmErr"></div>
+
+                    <button type="submit" class="btn-primary" id="signupSubmit">
+                        <span class="btn-text">Create account</span>
+                        <span class="btn-spinner hidden"><i class="fas fa-circle-notch fa-spin"></i></span>
+                    </button>
+                    <p class="auth-switch">Already have an account? <a href="#" data-tab="login" class="switch-link">Sign in</a></p>
+                </form>
+
+                <form id="loginForm" class="auth-form hidden" novalidate>
+                    <label>Email address</label>
+                    <input type="email" id="liEmail" placeholder="you@example.com" autocomplete="email">
+                    <div class="error-text" id="liEmailErr"></div>
+
+                    <label>Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="liPass" placeholder="Your password" autocomplete="current-password">
+                        <i class="fas fa-eye toggle-eye" data-target="liPass"></i>
+                    </div>
+                    <div class="error-text" id="liPassErr"></div>
+
+                    <button type="submit" class="btn-primary" id="loginSubmit">
+                        <span class="btn-text">Sign in</span>
+                        <span class="btn-spinner hidden"><i class="fas fa-circle-notch fa-spin"></i></span>
+                    </button>
+                    <p class="auth-switch">New here? <a href="#" data-tab="signup" class="switch-link">Create account</a></p>
+                </form>
+
+                <div class="auth-status" id="authStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN APP ========== -->
+    <div class="app-wrapper hidden" id="appWrapper">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none">
+                    <rect x="2" y="2" width="44" height="44" rx="14" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M14 30L22 20L28 26L34 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="34" cy="16" r="3" fill="currentColor"/>
+                </svg>
+                <span>Filio</span>
+            </div>
+            <nav class="side-nav">
+                <a href="#" class="active" data-page="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="#" data-page="plans"><i class="fas fa-layer-group"></i> Plans</a>
+                <a href="#" data-page="investments"><i class="fas fa-briefcase"></i> Investments</a>
+                <a href="#" data-page="deposits"><i class="fas fa-arrow-down-to-line"></i> Deposits</a>
+                <a href="#" data-page="settings"><i class="fas fa-gear"></i> Settings</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-mini">
+                    <div class="avatar-sm" id="sideAvatar">U</div>
+                    <div>
+                        <div class="mini-name" id="sideName">User</div>
+                        <div class="mini-email" id="sideEmail">user@mail.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <h2 id="pageTitle">Dashboard</h2>
+                    <p class="page-sub" id="pageSub">Welcome back</p>
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <button class="icon-btn" id="notifBtn" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notif-dot hidden" id="notifDot"></span>
+                    </button>
+                    <button class="icon-btn" id="logoutBtnTop" title="Logout"><i class="fas fa-right-from-bracket"></i></button>
+                </div>
+            </header>
+
+            <!-- DASHBOARD -->
+            <section class="page" id="page-dashboard">
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Available balance</span>
+                        <span class="stat-value" id="balanceDisplay">₦0</span>
+                        <span class="stat-hint">Ready to invest or withdraw</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Active earnings</span>
+                        <span class="stat-value gold" id="activeEarnings">₦0</span>
+                        <span class="stat-hint">Accruing every second</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Total profit</span>
+                        <span class="stat-value" id="totalProfit">₦0</span>
+                        <span class="stat-hint">Lifetime earnings</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Active plans</span>
+                        <span class="stat-value" id="activePlansCount">0</span>
+                        <span class="stat-hint">Investments running</span>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button class="action-btn primary" id="depositBtn">
+                        <i class="fas fa-circle-plus"></i>
+                        <div>
+                            <span class="action-title">Deposit funds</span>
+                            <span class="action-sub">Fund your account</span>
+                        </div>
+                    </button>
+                    <button class="action-btn secondary" id="withdrawBtn">
+                        <i class="fas fa-arrow-up-from-bracket"></i>
+                        <div>
+                            <span class="action-title">Withdraw</span>
+                            <span class="action-sub">Min ₦5,000</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="two-col">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>Quick invest</h3>
+                            <a href="#" class="link-muted" data-page="plans">View all</a>
+                        </div>
+                        <div class="plans-grid" id="plansGridDash"></div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <h3>Recent activity</h3>
+                        </div>
+                        <div id="activityList"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-plans">
+                <div class="panel">
+                    <div class="panel-head">
+                        <h3>Investment plans</h3>
+                        <span class="pill">Deposit to unlock</span>
+                    </div>
+                    <div class="plans-grid" id="plansGridFull"></div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-investments">
+                <div class="panel">
+                    <div class="panel-head"><h3>My investments</h3></div>
+                    <div id="investmentsList"></div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-deposits">
+                <div class="panel">
+                    <div class="panel-head"><h3>Deposit history</h3></div>
+                    <div id="depositsList"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-head"><h3>Withdrawal history</h3></div>
+                    <div id="withdrawalsList"></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-head"><h3>Wallet transaction history</h3></div>
+                    <div id="transactionsList"></div>
+                </div>
+            </section>
+
+            <section class="page hidden" id="page-settings">
+                <div class="settings-grid">
+                    <div class="panel">
+                        <div class="panel-head"><h3>Profile</h3></div>
+                        <div class="profile-head">
+                            <div class="avatar-lg" id="profileAvatar">U</div>
+                            <div>
+                                <div class="profile-name" id="profileName">User</div>
+                                <div class="profile-email" id="profileEmail">user@mail.com</div>
+                            </div>
+                        </div>
+                        <form id="profileForm" class="settings-form">
+                            <label>Full name</label>
+                            <input type="text" id="setName" placeholder="Your name">
+                            <label>Email (read only)</label>
+                            <input type="email" id="setEmail" disabled>
+                            <label>Phone</label>
+                            <input type="tel" id="setPhone" placeholder="+234...">
+                            <label>Country</label>
+                            <input type="text" id="setCountry" placeholder="Nigeria">
+                            <label>Bio</label>
+                            <textarea id="setBio" rows="3" placeholder="A short bio"></textarea>
+                            <button type="submit" class="btn-primary">Save profile</button>
+                        </form>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-head"><h3>Appearance</h3></div>
+                        <div class="setting-row">
+                            <div>
+                                <div class="setting-title">Theme mode</div>
+                                <div class="setting-desc">Dark or light within your chosen style</div>
+                            </div>
+                            <button class="toggle-switch" id="themeSwitch"><span></span></button>
+                        </div>
+                        <div class="setting-row" style="flex-direction:column;align-items:stretch;">
+                            <div>
+                                <div class="setting-title">UI style</div>
+                                <div class="setting-desc">Choose the look and feel</div>
+                            </div>
+                            <div class="ui-options" id="uiOptions">
+                                <div class="ui-option active" data-ui="classic">
+                                    <div class="ui-preview classic-preview"><span></span><span></span></div>
+                                    <span>Classic</span>
+                                </div>
+                                <div class="ui-option" data-ui="premium">
+                                    <div class="ui-preview premium-preview"><span></span><span></span></div>
+                                    <span>Premium</span>
+                                </div>
+                                <div class="ui-option" data-ui="default">
+                                    <div class="ui-preview default-preview"><span></span><span></span></div>
+                                    <span>Default</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-head"><h3>Security</h3></div>
+                        <form id="passwordForm" class="settings-form">
+                            <label>Current password</label>
+                            <input type="password" id="curPass" placeholder="Current password">
+                            <label>New password</label>
+                            <input type="password" id="newPass" placeholder="Min 8 chars, 1 uppercase, 1 number">
+                            <label>Confirm new password</label>
+                            <input type="password" id="confPass" placeholder="Re-enter new password">
+                            <button type="submit" class="btn-primary">Update password</button>
+                        </form>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-head"><h3>Session</h3></div>
+                        <p class="text-muted" style="font-size:0.85rem;margin-bottom:16px;">Log out of this device.</p>
+                        <button class="btn-danger" id="logoutBtnSettings"><i class="fas fa-right-from-bracket"></i> Log out</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-panel-head">
+            <h3>Notifications</h3>
+            <button class="icon-btn" id="closeNotif"><i class="fas fa-xmark"></i></button>
+        </div>
+        <div class="notif-panel-body" id="notifList"></div>
+    </div>
+    <div class="notif-backdrop hidden" id="notifBackdrop"></div>
+
+    <!-- DEPOSIT MODAL -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>New deposit</h3>
+                <button class="icon-btn" id="closeDeposit"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-step" id="depositStep1">
+                    <p class="modal-sub">Select a plan and quantity.</p>
+                    <div class="plan-selector" id="planSelector"></div>
+                    <div class="quantity-control">
+                        <button id="qtyMinus"><i class="fas fa-minus"></i></button>
+                        <span id="qtyDisplay">1</span>
+                        <button id="qtyPlus"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="total-amount" id="totalAmount">₦0</div>
+                    <div class="status-message" id="modalStatus"></div>
+                    <div class="modal-actions">
+                        <button class="btn-cancel" id="cancelDeposit">Cancel</button>
+                        <button class="btn-primary" id="confirmDeposit">Confirm & proceed</button>
+                    </div>
+                </div>
+
+                <div class="modal-step hidden" id="depositStep2">
+                    <p class="modal-sub">Transfer the exact amount to the account below, then upload your receipt.</p>
+                    <div class="bank-details">
+                        <div><span>Account number</span><strong>7033953515</strong></div>
+                        <div><span>Bank</span><strong>Opay</strong></div>
+                        <div><span>Account name</span><strong>Adeebunmi</strong></div>
+                    </div>
+                    <div class="receipt-zone" id="receiptZone">
+                        <input type="file" id="receiptInput" accept="image/*">
+                        <div class="receipt-placeholder" id="receiptPlaceholder">
+                            <i class="fas fa-cloud-arrow-up"></i>
+                            <p>Click to upload receipt</p>
+                            <span>JPG, PNG · Max 5MB · Bank receipt only</span>
+                        </div>
+                        <div class="receipt-preview hidden" id="receiptPreview">
+                            <img id="receiptImg" alt="Receipt preview">
+                            <button class="receipt-remove" id="receiptRemove"><i class="fas fa-xmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="status-message" id="uploadStatus"></div>
+                    <div class="modal-actions">
+                        <button class="btn-cancel" id="backDeposit">Back</button>
+                        <button class="btn-primary" id="submitReceiptBtn" disabled>Submit receipt</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WITHDRAW MODAL -->
+    <div class="modal-overlay" id="withdrawModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>Withdraw funds</h3>
+                <button class="icon-btn" id="closeWithdraw"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-sub">Minimum withdrawal is ₦5,000. Your balance will be held while the request is reviewed.</p>
+                <label for="withdrawAmount">Amount (NGN)</label>
+                <input type="number" id="withdrawAmount" class="input-lg" placeholder="Amount (NGN)" min="5000" step="1">
+                <label for="withdrawAccountName">Account name</label>
+                <input type="text" id="withdrawAccountName" class="input-lg" placeholder="Name on bank account" autocomplete="name">
+                <label for="withdrawBankName">Bank name</label>
+                <input type="text" id="withdrawBankName" class="input-lg" placeholder="Bank name" autocomplete="off">
+                <label for="withdrawAccountNumber">Account number</label>
+                <input type="text" id="withdrawAccountNumber" class="input-lg" placeholder="10-digit account number" inputmode="numeric" maxlength="10" autocomplete="off">
+                <div class="status-message" id="withdrawStatus"></div>
+                <div class="modal-actions">
+                    <button class="btn-cancel" id="cancelWithdraw">Cancel</button>
+                    <button class="btn-primary" id="confirmWithdraw">Submit request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUY CONFIRM MODAL -->
+    <div class="modal-overlay" id="buyModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-head">
+                <h3>Confirm purchase</h3>
+                <button class="icon-btn" id="closeBuy"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-sub" id="buyBody">Buy this plan?</p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" id="cancelBuy">Cancel</button>
+                    <button class="btn-primary" id="confirmBuy">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+    <script src="backend-config.js"></script>
+    <script src="backend.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filio Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- LOGIN -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <svg viewBox="0 0 48 48" width="52" height="52" fill="none" style="color:var(--gold);margin-bottom:20px;">
+                <rect x="2" y="2" width="44" height="44" rx="14" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M14 30L22 20L28 26L34 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="34" cy="16" r="3" fill="currentColor"/>
+            </svg>
+            <h1 class="serif">Filio <span style="color:var(--gold);">Admin</span></h1>
+            <p>Sign in with your Supabase admin account to manage requests and wallets.</p>
+            <input type="email" id="adminEmail" placeholder="Admin email">
+            <input type="password" id="adminPass" placeholder="Password">
+            <div class="error-text" id="loginError">Invalid credentials.</div>
+            <button class="btn-confirm w-full" id="loginBtn">Sign in</button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard hidden">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <svg viewBox="0 0 48 48" width="32" height="32" fill="none" style="color:var(--gold);">
+                    <rect x="2" y="2" width="44" height="44" rx="14" stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M14 30L22 20L28 26L34 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="34" cy="16" r="3" fill="currentColor"/>
+                </svg>
+                <span>Filio Admin</span>
+            </div>
+            <nav>
+                <a href="#" class="active" data-tab="approvals"><i class="fas fa-check-double"></i> Approvals</a>
+                <a href="#" data-tab="users"><i class="fas fa-users"></i> Users</a>
+            </nav>
+            <button class="logout-btn" id="logoutBtn"><i class="fas fa-right-from-bracket"></i> Logout</button>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <h2 id="pageTitle">Approvals</h2>
+                <div class="admin-badge"><i class="fas fa-user-shield"></i> Admin</div>
+            </header>
+
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-label">Pending deposits</span>
+                    <span class="stat-value" id="statPending">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Pending withdrawals</span>
+                    <span class="stat-value" id="statWithdrawals">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Users</span>
+                    <span class="stat-value" id="statUsers">0</span>
+                </div>
+            </div>
+
+            <div id="tab-approvals" class="tab-content">
+                <div class="section-title"><span>Pending receipts</span></div>
+                <div id="pendingList"></div>
+                <div class="section-title"><span>Withdrawal requests</span></div>
+                <p class="withdrawal-instructions">Send payment to the account shown below, then mark the request as paid.</p>
+                <div id="withdrawalList"></div>
+            </div>
+            <div id="tab-users" class="tab-content hidden">
+                <div class="section-title"><span>Registered users</span></div>
+                <div id="usersList"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- RECEIPT PREVIEW MODAL -->
+    <div class="modal-overlay" id="receiptModal">
+        <div class="modal-card">
+            <div class="modal-head">
+                <h3>Receipt preview</h3>
+                <button class="icon-btn" id="closeReceipt"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <img id="receiptFullImg" style="width:100%;border-radius:12px;display:block;" alt="Receipt">
+            </div>
+        </div>
+    </div>
+
+    <!-- WALLET CREDIT MODAL -->
+    <div class="modal-overlay" id="walletCreditModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-head">
+                <h3>Credit user wallet</h3>
+                <button class="icon-btn" id="closeWalletCredit"><i class="fas fa-xmark"></i></button>
+            </div>
+            <form class="modal-body" id="walletCreditForm">
+                <p class="withdrawal-instructions" id="walletCreditUser"></p>
+                <label for="walletCreditAmount">Amount (NGN)</label>
+                <input type="number" class="admin-input" id="walletCreditAmount" min="1" step="1" required>
+                <label for="walletCreditReason">Reason</label>
+                <input type="text" class="admin-input" id="walletCreditReason" maxlength="120" placeholder="e.g. Restore mistaken withdrawal" required>
+                <div class="error-text wallet-credit-error" id="walletCreditError" role="alert"></div>
+                <div class="approval-actions">
+                    <button type="button" class="btn-small btn-reject" id="cancelWalletCredit">Cancel</button>
+                    <button type="submit" class="btn-small btn-approve">Credit wallet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+    <script src="backend-config.js"></script>
+    <script src="backend.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
